@@ -29,10 +29,8 @@ void saveScore(struct Player player)
 void displayScore(char username[])
 {
     FILE *file = fopen("scores.txt", "r");
-    struct Player player = {0};
-    int found = 0;
-
-    strcpy(player.username, username);
+    int gameNumber = 1;
+    int totalSum = 0;
 
     if (file != NULL)
     {
@@ -44,22 +42,17 @@ void displayScore(char username[])
         {
             if (strcmp(stored_username, username) == 0)
             {
-                player.quizGame_score = score1;
-                player.ticTacToe_score = score2;
-                player.storyGame = score3;
-                found = 1;
-                break;
+                int lineSum = score1 + score2 + score3;
+                printf("Game %d: %d Points\n", gameNumber, lineSum);
+                totalSum += lineSum;
+                gameNumber++;
             }
         }
         fclose(file);
     }
 
-    printf("\n%s scored:\n", username);
-    printf("Game 1: %d Points\n", player.quizGame_score);
-    printf("Game 2: %d Points\n", player.ticTacToe_score);
-    printf("Game 3: %d Points\n", player.storyGame);
+    printf("\nTotal score across all games: %d Points\n", totalSum);
 }
-
 // Story Game by Md. Ashiquzzaman Khan - C243005
 
 #define MAX_HEALTH 100
@@ -205,7 +198,7 @@ int playTicTacToe()
 
     } while (response == 'Y');
 
-    printf("Thanks for playing!");
+    printf("Thanks for playing!\n");
 
     return t_score;
 }
@@ -359,8 +352,8 @@ void launchGame(char username[], int gameChoice)
         player.ticTacToe_score = playTicTacToe();
         saveScore(player);
     case 3:
-        player.storyGame = intro();
-        player.storyGame == 1;
+        intro();
+        player.storyGame = relation_house_owner;
         saveScore(player);
         break;
     }
@@ -415,6 +408,7 @@ int main()
 int intro()
 {
     int choice;
+    printf("\nNow Playing: Time Walker\n");
     printf("[NARRATOR]: You wake up in the middle of the road. Your head pounds, and your vision is blurry. You try to remember who you are.");
     printf("\nEnter your name: ");
     scanf("%s", name);
